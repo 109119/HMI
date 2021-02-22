@@ -1,36 +1,27 @@
 import React, {useState, useEffect} from 'react';
 import './App.css';
 function App() {
-  const [newVolt1, setVolt1] = useState("");
-  const [newVolt2, setVolt2] = useState("");
   const [newVoltIn1, setVoltIn1] = useState("");
   const [newVoltIn2, setVoltIn2] = useState("");
   const [newState1, setState1] = useState(0);
   const [newState2, setState2] = useState(0);
 
   useEffect(() => {
-    getVolt();
     getVoltIn();
     getNum();
   }, []);
 
-  const handleNewVolt1 = (e) => setVolt1(e.currentTarget.value);
-  const handleNewVolt2 = (e) => setVolt2(e.currentTarget.value);
   const handleNewVoltIn1 = (e) => setVoltIn1(e.currentTarget.value);
   const handleNewVoltIn2 = (e) => setVoltIn2(e.currentTarget.value);
   const handleNewState1 = () => addState(1);
   const handleNewState2 = () => addState(2);
-
-  function getVolt() {
-    fetch('http://localhost:3001/volt')
-      .then(response => {
-        return response.json();
-      })
-      .then(data => {
-        setVolt1(data[data.length-1].voltage1);
-        setVolt2(data[data.length-1].voltage2);
-      });
+  const handleNewVoltSub = (event) => {
+    if (event.key === 'Enter') {
+      addVoltIn();
+      alert("Input has been saved");
+    }
   }
+  
 
   function getVoltIn() {
     fetch('http://localhost:3001/voltIn')
@@ -51,24 +42,6 @@ function App() {
       .then(data => {
         setState1(data[data.length-1].state1);
         setState2(data[data.length-1].state2);
-      });
-  }
-  
-  function addVolt() {
-    let volt1 = newVolt1;
-    let volt2 = newVolt2;
-    fetch('http://localhost:3001/volt', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({volt1, volt2}),
-      })
-      .then(response => {
-        return response.text();
-      })
-      .then(data => {
-        getVolt();
       });
   }
 
@@ -140,27 +113,27 @@ function App() {
           height="10"
         />
 
-        <foreignObject x="27%" y="13%" width="60" height="50">
-          <form onSubmit={addVolt}>
-            <input type="text" className="input-size" onChange={handleNewVolt1} placeholder={newVolt1}/>
+        <foreignObject x="26%" y="13%" width="60" height="50">
+          <form onClick={e => {e.preventDefault();}}>
+            <button className="output-size">{newVoltIn1}</button>
           </form><br/>
         </foreignObject>
         
-        <foreignObject x="66%" y="13%" width="60" height="50">
-          <form onSubmit={addVolt}>
-            <input type="text" className="input-size" onChange={handleNewVolt2} placeholder={newVolt2}/>
+        <foreignObject x="64%" y="13%" width="60" height="50">
+        <form onClick={e => {e.preventDefault();}}>
+            <button className="output-size">{newVoltIn2}</button>
           </form><br/>
         </foreignObject>
 
         <foreignObject x="49%" y="10%" width="60" height="50">
-          <form onSubmit={addVoltIn}>
-            <input type="text" className="input-size" onChange={handleNewVoltIn1} placeholder={newVoltIn1}/>
-          </form><br/>      
+          <form onSubmit={e => {e.preventDefault();}}>
+            <input type="text" className="input-size" onChange={handleNewVoltIn1} onKeyDown={handleNewVoltSub} placeholder={newVoltIn1}/>
+          </form><br/>
         </foreignObject>
 
         <foreignObject x="85%" y="10%" width="60" height="50">
-          <form onSubmit={addVoltIn}>
-            <input type="text" className="input-size" onChange={handleNewVoltIn2} placeholder={newVoltIn2}/>
+          <form onSubmit={e => {e.preventDefault();}}>
+            <input type="text" className="input-size" onChange={handleNewVoltIn2} onKeyDown={handleNewVoltSub} placeholder={newVoltIn2}/>
           </form><br/>
         </foreignObject>
         
