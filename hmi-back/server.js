@@ -14,15 +14,11 @@ app.get('/', (request, response) => {
   response.json({ info: 'Node.js, Express, and Postgres API' })
 })
 
-app.get('/volt', db.getVolt)
 app.get('/voltIn', db.getVoltIn)
 app.get('/num', db.getNum)
 app.post('/volt', db.addVolt)
 app.post('/voltIn', db.addVoltIn)
 app.post('/num', db.addNum)
-// app.get('/volt/:id', db.getVoltByID)
-// app.get('/id', db.getID)
-// app.put('/volt/:id', db.updateVoltByID)
 
 app.listen(port, () => {
   console.log(`App running on port ${port}.`)
