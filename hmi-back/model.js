@@ -1,10 +1,10 @@
 const Pool = require('pg').Pool
 
 const pool = new Pool({
-    user: 'postgres',
+    user: 'user_hmi',
     host: 'localhost',
     database: 'hmi',
-    password: 'test',
+    password: 'user',
 });
 
 const getVoltIn = (request, response) => {
