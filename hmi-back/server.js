@@ -15,7 +15,9 @@ app.get('/', (request, response) => {
 })
 
 app.get('/voltIn', db.getVoltIn)
+app.get('/voltIn/last', db.getLastVoltIn)
 app.get('/num', db.getNum)
+app.get('/num/last', db.getLastNum)
 app.post('/volt', db.addVolt)
 app.post('/voltIn', db.addVoltIn)
 app.post('/num', db.addNum)

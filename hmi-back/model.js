@@ -16,8 +16,26 @@ const getVoltIn = (request, response) => {
     })
 }
 
+const getLastVoltIn = (request, response) => {
+    pool.query('SELECT * FROM voltIn order by id desc limit 1', (error, results) => {
+        if (error) {
+            throw error
+        }
+        response.status(200).json(results.rows)
+    })
+}
+
 const getNum = (request, response) => {
     pool.query('SELECT * FROM num', (error, results) => {
+        if (error) {
+            throw error
+        }
+        response.status(200).json(results.rows)
+    })
+}
+
+const getLastNum = (request, response) => {
+    pool.query('SELECT * FROM num order by id desc limit 1', (error, results) => {
         if (error) {
             throw error
         }
@@ -57,7 +75,9 @@ const addNum = (request, response) => {
 
 module.exports = {
     getNum,
+    getLastNum,
     getVoltIn,
+    getLastVoltIn,
     addVolt,
     addNum,
     addVoltIn

@@ -1,6 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import './App.css';
+import {ReactComponent as HMIFrame} from './hmi.svg';
+
 function App() {
+  const [lastVoltIn1, setLastVoltIn1] = useState("");
+  const [lastVoltIn2, setLastVoltIn2] = useState("");
   const [newVoltIn1, setVoltIn1] = useState("");
   const [newVoltIn2, setVoltIn2] = useState("");
   const [newState1, setState1] = useState(0);
@@ -29,7 +33,9 @@ function App() {
         return response.json();
       })
       .then(data => {
+        setLastVoltIn1(data[data.length-1].voltin1);
         setVoltIn1(data[data.length-1].voltin1);
+        setLastVoltIn2(data[data.length-1].voltin2);
         setVoltIn2(data[data.length-1].voltin2);
       });
   }
@@ -90,62 +96,45 @@ function App() {
   }
 
   return (
-    <div>
+    <div>      
       <svg width="1000" height="400" style={{ fill: '#0066CC' }}>
-        <rect
-          x="10%"
-          y="10%"
-          width="10"
-          height="300"
-        />
-        
-        <rect
-          x="47%"
-          y="10%"
-          width="10"
-          height="300"
-        />
+        <HMIFrame />
 
-        <rect
-          x="10%"
-          y="22%"
-          width="750"
-          height="10"
-        />
-
-        <foreignObject x="26%" y="13%" width="60" height="50">
+        <foreignObject x="24%" y="13%" width="60" height="50">
           <form onClick={e => {e.preventDefault();}}>
-            <button className="output-size">{newVoltIn1}</button>
+            <button className="output-size">{lastVoltIn1}</button>
           </form><br/>
         </foreignObject>
         
         <foreignObject x="64%" y="13%" width="60" height="50">
         <form onClick={e => {e.preventDefault();}}>
-            <button className="output-size">{newVoltIn2}</button>
+            <button className="output-size">{lastVoltIn2}</button>
           </form><br/>
         </foreignObject>
 
-        <foreignObject x="49%" y="10%" width="60" height="50">
+        <foreignObject x="48%" y="10%" width="60" height="50">
           <form onSubmit={e => {e.preventDefault();}}>
             <input type="text" className="input-size" onChange={handleNewVoltIn1} onKeyDown={handleNewVoltSub} placeholder={newVoltIn1}/>
           </form><br/>
         </foreignObject>
 
-        <foreignObject x="85%" y="10%" width="60" height="50">
+        <foreignObject x="88%" y="10%" width="60" height="50">
           <form onSubmit={e => {e.preventDefault();}}>
             <input type="text" className="input-size" onChange={handleNewVoltIn2} onKeyDown={handleNewVoltSub} placeholder={newVoltIn2}/>
           </form><br/>
         </foreignObject>
         
-        <foreignObject x="9%" y="45%" width="50" height="50">
+        <foreignObject x="6%" y="50%" width="50" height="50">
           <form onClick={e => {e.preventDefault();}}>
-            <button className="button-size" onClick={handleNewState1}>{newState1}</button>
+            <button className={newState1===0 ? "button-size1" : "button-size2" } onClick={handleNewState1}></button>
+            {" " + newState1}
           </form><br/>      
         </foreignObject>
 
-        <foreignObject x="46%" y="45%" width="50" height="50">
+        <foreignObject x="45.4%" y="50%" width="50" height="50">
           <form onClick={e => {e.preventDefault();}}>
-            <button className="button-size" onClick={handleNewState2}>{newState2}</button>
+            <button className={newState2===0 ? "button-size1" : "button-size2" } onClick={handleNewState2}></button>
+            {" " + newState2}
           </form>
         </foreignObject>
       </svg>
